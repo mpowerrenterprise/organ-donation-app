@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organ;
+use App\Models\Message;
 use App\Models\OrganRequest;
-use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -206,5 +206,68 @@ class OrganController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Organ request not found.']);
     }
+
+    public function showMessages()
+    {
+        // Fetch messages ordered by id in descending order
+        $messages = Message::with('user') // Assuming there is a relationship with User model
+                            ->orderBy('id', 'desc')
+                            ->get();
+    
+        // Return the view with the messages data
+        return view('messages', ['messages' => $messages]);
+    }
+
+    public function processMessagesAjax(Request $request)
+    {
+        $query = Message::with('user'); // Fetch messages with user relationship
+        
+        // Optional search logic
+        if ($request->filled('search.value')) {
+            $searchValue = $request->input('search.value');
+            $query->where(function ($q) use ($searchValue) {
+                $q->where('organ_name', 'like', '%' . $searchValue . '%')
+                  ->orWhere('blood_type', 'like', '%' . $searchValue . '%')
+                  ->orWhere('message', 'like', '%' . $searchValue . '%')
+                  ->orWhereHas('user', function($subQuery) use ($searchValue) {
+                      $subQuery->where('full_name', 'like', '%' . $searchValue . '%');
+                  });
+            });
+        }
+    
+        // Get total count before pagination
+        $total = $query->count();
+    
+        // Pagination and ordering
+        $limit = (int) $request->input('length', 10);
+        $offset = (int) $request->input('start', 0);
+    
+        // Fetch the data
+        $messages = $query->skip($offset)
+                          ->take($limit)
+                          ->orderBy('id', 'desc')
+                          ->get();
+    
+        // Prepare data for DataTable
+        $data = [];
+        foreach ($messages as $message) {
+            $data[] = [
+                'id' => $message->id,
+                'organ_name' => $message->organ_name,
+                'blood_type' => $message->blood_type,
+                'requested_by' => $message->user->full_name, // Full Name of the user
+                'message' => $message->message,
+            ];
+        }
+    
+        // Return JSON response
+        return response()->json([
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $total,
+            'data' => $data,
+        ]);
+    }
+    
     
 }

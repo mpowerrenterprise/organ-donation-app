@@ -147,7 +147,12 @@
                                 <i class="fa fa-users"></i> <span> User Accounts </span>
                             </a>
                         </li>
-                        
+
+                        <li>
+                            <a href="{{ route('show.messages') }}" class="waves-effect">
+                                <i class="fa fa-envelope"></i> <span> Messages </span>
+                            </a>
+                        </li>                        
                     
                         <li>
                             <a href="{{ route('show.settings') }}" class="waves-effect">
