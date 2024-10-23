@@ -6,7 +6,9 @@ use App\Http\Controllers\OrganController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MobileUserController;
 use App\Http\Controllers\AuthenticationController;
+
 
 Route::get('/', [AuthenticationController::class, 'index'])->name("index");
 Route::post('/login', [AuthenticationController::class, 'login'])->name("login");
@@ -20,6 +22,15 @@ Route::middleware(['CheckAdminAuth'])->group(function () {
     Route::get('/courses', [CourseController::class, 'showCourses'])->name("show.courses");
     Route::get('/batches', [BatchController::class, 'showBatches'])->name("show.batches");
     Route::get('/settings', [SettingController::class, 'showSettings'])->name("show.settings");
+
+
+    Route::get('/organs/requested', [OrganController::class, 'showRequestedOrgans'])->name("show.requested.organs");
+
+    Route::get('/users/mobile', [MobileUserController::class, 'showMobileUsers'])->name("show.mobile.users");
+    Route::post('/users/mobile/ajax',  [MobileUserController::class, 'processMobileUsersAjax'])->name('process.mobile.users.ajax');
+    Route::post('/users/mobile/approve/{id}', [MobileUserController::class, 'approveUser'])->name("approve.user");
+    Route::delete('/users/delete/{id}', [MobileUserController::class, 'deleteUser'])->name('delete.user');
+
 
     Route::post('/organs/add', [OrganController::class, 'addOrgan'])->name('add.organ');
     Route::post('/organs/ajax',  [OrganController::class, 'processOrgansAjax'])->name('process.organs.ajax');

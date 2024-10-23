@@ -17,6 +17,11 @@ class OrganController extends Controller
         
     }
 
+    function showRequestedOrgans(){
+
+        
+    }
+
     public function processOrgansAjax(Request $request) {
         // Query to fetch organ data
         $query = Organ::query();

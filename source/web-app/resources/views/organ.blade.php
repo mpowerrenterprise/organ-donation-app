@@ -2,7 +2,7 @@
 
 @section('HeaderAssets')
 
-  <title>IOV - Customers</title>
+  <title>Organs</title>
 
   <!-- DataTables -->
   <link href="{{asset('assets')}}/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -63,13 +63,13 @@
         <div class="row align-items-center ">
           <div class="col-md-8">
             <div class="page-title-box">
-                <h4 class="page-title">Students</h4>
+                <h4 class="page-title">Add Organs</h4>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a>IOV</a>
+                        <a>App</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="#">Students</a>
+                        <a href="#">Organs</a>
                     </li>
                 </ol>
             </div>

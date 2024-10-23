@@ -142,10 +142,16 @@
                                 <i class="fa fa-stethoscope"></i> <span> Approve Organs </span>
                             </a>
                         </li>
+
+                        <li>
+                            <a href="{{ route('show.courses') }}" class="waves-effect">
+                                <i class="fa fa-dna"></i> <span> Requested Organs </span>
+                            </a>
+                        </li>
                         
                         <li>
-                            <a href="{{ route('show.batches') }}" class="waves-effect">
-                                <i class="fa fa-users"></i> <span> Approve Accounts </span>
+                            <a href="{{ route('show.mobile.users') }}" class="waves-effect">
+                                <i class="fa fa-users"></i> <span> User Accounts </span>
                             </a>
                         </li>
                         
