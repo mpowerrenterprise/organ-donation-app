@@ -2,7 +2,7 @@
 
 @section('HeaderAssets')
 
-  <title>Organs</title>
+  <title>Mobile Users</title>
 
   <!-- DataTables -->
   <link href="{{asset('assets')}}/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
