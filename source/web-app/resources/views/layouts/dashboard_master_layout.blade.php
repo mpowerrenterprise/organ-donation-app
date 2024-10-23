@@ -135,17 +135,10 @@
                                 <i class="fa fa-heart"></i> <span> Add Organs </span>
                             </a>
                         </li>
-                        
                     
                         <li>
-                            <a href="{{ route('show.courses') }}" class="waves-effect">
-                                <i class="fa fa-stethoscope"></i> <span> Approve Organs </span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="{{ route('show.courses') }}" class="waves-effect">
-                                <i class="fa fa-dna"></i> <span> Requested Organs </span>
+                            <a href="{{ route('show.organ.requests') }}" class="waves-effect">
+                                <i class="fa fa-dna"></i> <span>Organ Requests</span>
                             </a>
                         </li>
                         

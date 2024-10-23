@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organ;
+use App\Models\OrganRequest;
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -17,9 +18,9 @@ class OrganController extends Controller
         
     }
 
-    function showRequestedOrgans(){
+    function showOrganRequests(){
 
-        
+        return view("organ-request");
     }
 
     public function processOrgansAjax(Request $request) {
@@ -119,6 +120,91 @@ class OrganController extends Controller
         }
     
         return response()->json(['success' => false, 'message' => 'Organ not found']);
+    }
+
+
+    // Process the organ requests (for DataTables)
+    public function processOrganRequestsAjax(Request $request)
+    {
+        // Fetch organ requests along with organ and user details
+        $query = OrganRequest::with('organ', 'user'); // Assuming OrganRequest has relationships with Organ and User models
+
+        // Search logic (if required)
+        if ($request->filled('search.value')) {
+            $searchValue = $request->input('search.value');
+            $query->where(function ($q) use ($searchValue) {
+                $q->whereHas('organ', function ($subQuery) use ($searchValue) {
+                    $subQuery->where('organ_name', 'like', '%' . $searchValue . '%');
+                })->orWhereHas('user', function ($subQuery) use ($searchValue) {
+                    $subQuery->where('full_name', 'like', '%' . $searchValue . '%')
+                            ->orWhere('phone_number', 'like', '%' . $searchValue . '%');
+                });
+            });
+        }
+
+        // Get total count before pagination
+        $total = $query->count();
+
+        // Pagination setup
+        $limit = (int) $request->input('length', 10); // Default to 10 if not provided
+        $offset = (int) $request->input('start', 0); // Default to 0 if not provided
+
+        // Fetch the paginated result
+        $organRequests = $query->skip($offset)
+                            ->take($limit)
+                            ->orderBy('id', 'DESC')
+                            ->get();
+
+        // Prepare data for DataTables
+        $data = [];
+        foreach ($organRequests as $organRequest) {  // Renamed variable to $organRequest
+            $data[] = [
+                'id' => $organRequest->id,
+                'organ_name' => $organRequest->organ->organ_name,
+                'blood_type' => $organRequest->organ->blood_type,
+                'requested_by' => $organRequest->user->full_name,
+                'phone_number' => $organRequest->user->phone_number,
+                'status' => $organRequest->status,
+            ];
+        }
+
+        // Prepare response for DataTables
+        $response = [
+            'draw' => intval($request->input('draw')),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $total,
+            'data' => $data,
+        ];
+
+        return response()->json($response);
+    }
+
+    // Accept the organ request
+    public function acceptOrganRequest($id)
+    {
+        $organRequest = OrganRequest::find($id);
+        if ($organRequest) {
+            $organRequest->status = 'approved';
+            $organRequest->save();
+
+            return response()->json(['success' => true, 'message' => 'Organ request accepted successfully.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Organ request not found.']);
+    }
+
+    // Reject the organ request
+    public function rejectOrganRequest($id)
+    {
+        $organRequest = OrganRequest::find($id);
+        if ($organRequest) {
+            $organRequest->status = 'rejected';
+            $organRequest->save();
+
+            return response()->json(['success' => true, 'message' => 'Organ request rejected successfully.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Organ request not found.']);
     }
     
 }

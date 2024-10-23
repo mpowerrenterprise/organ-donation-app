@@ -21,4 +21,10 @@ class Organ extends Model
     ];
 
     // Optionally, define any relationships or other methods here if needed
+
+    public function requests()
+    {
+        return $this->hasMany(OrganRequest::class, 'organ_id');
+    }
+
 }

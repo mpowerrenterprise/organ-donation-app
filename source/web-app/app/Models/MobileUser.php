@@ -24,5 +24,11 @@ class MobileUser extends Model
         'status',
     ];
 
+    public function organRequests()
+    {
+        return $this->hasMany(OrganRequest::class, 'user_id');
+    }
+
+
     // Optionally, define any relationships or methods here if needed
 }

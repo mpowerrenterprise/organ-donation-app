@@ -19,12 +19,8 @@ Route::middleware(['CheckAdminAuth'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'showDashboard'])->name("show.dashboard");
     Route::get('/organs', [OrganController::class, 'showOrgans'])->name("show.organs");
-    Route::get('/courses', [CourseController::class, 'showCourses'])->name("show.courses");
-    Route::get('/batches', [BatchController::class, 'showBatches'])->name("show.batches");
+    Route::get('/organs/requests', [OrganController::class, 'showOrganRequests'])->name("show.organ.requests");
     Route::get('/settings', [SettingController::class, 'showSettings'])->name("show.settings");
-
-
-    Route::get('/organs/requested', [OrganController::class, 'showRequestedOrgans'])->name("show.requested.organs");
 
     Route::get('/users/mobile', [MobileUserController::class, 'showMobileUsers'])->name("show.mobile.users");
     Route::post('/users/mobile/ajax',  [MobileUserController::class, 'processMobileUsersAjax'])->name('process.mobile.users.ajax');
@@ -35,6 +31,9 @@ Route::middleware(['CheckAdminAuth'])->group(function () {
     Route::post('/organs/add', [OrganController::class, 'addOrgan'])->name('add.organ');
     Route::post('/organs/ajax',  [OrganController::class, 'processOrgansAjax'])->name('process.organs.ajax');
     Route::delete('/organs/delete/{id}', [OrganController::class, 'deleteOrgan'])->name('delete.organ');
+    Route::post('organ-requests/accept/{id}', [OrganController::class, 'acceptOrganRequest'])->name('accept.organ.request');
+    Route::post('organ-requests/reject/{id}', [OrganController::class, 'rejectOrganRequest'])->name('reject.organ.request');
+    Route::post('organ-requests/ajax', [OrganController::class, 'processOrganRequestsAjax'])->name('process.organ.requests.ajax');
 
     Route::post('/courses/add', [CourseController::class, 'addCourse'])->name("add.course");
     Route::get('/courses/view/{id}', [CourseController::class, 'viewCourse'])->name('view.course');
