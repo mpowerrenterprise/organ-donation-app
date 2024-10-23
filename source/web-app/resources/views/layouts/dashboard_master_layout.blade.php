@@ -193,7 +193,7 @@
             <!-- content -->
 
             <footer class="footer">
-                © {{ date('Y') }} IOV Private Limited - Developed by <a href="http://www.mpowerr.com" target="_blank" class="footer-link">Mpowerr</a>.
+                © {{ date('Y') }} All Rights Reserved.
             </footer>                     
 
         </div>
