@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'create_account_screen.dart'; // Import the CreateAccountScreen
+import 'login_screen.dart'; // Import the LoginScreen
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +46,19 @@ class LoginScreen extends StatelessWidget {
                     child: OutlinedButton(
                       onPressed: () {
                         // Navigate to Login Screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
                       },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        side: BorderSide(color: Colors.redAccent, width: 2),
+                        side: const BorderSide(color: Colors.redAccent, width: 2),
                       ),
                       child: const Text(
                         'Login',

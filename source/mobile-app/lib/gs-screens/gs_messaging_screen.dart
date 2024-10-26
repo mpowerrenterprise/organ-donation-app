@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../auth-screens/auth_screen.dart'; // Import the AuthScreen
+import '../auth-screens/auth_screen.dart';
 
 class MessagingScreen extends StatelessWidget {
   const MessagingScreen({Key? key}) : super(key: key);
@@ -70,7 +70,7 @@ class MessagingScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
+                          builder: (context) => const HomeScreen(),
                         ),
                       );
                     },
