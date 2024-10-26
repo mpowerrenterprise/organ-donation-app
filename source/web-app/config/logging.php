@@ -52,6 +52,17 @@ return [
 
     'channels' => [
 
+
+        'channels' => [
+            'custom_log' => [
+                'driver' => 'single',
+                'path' => storage_path('logs/custom_errors.log'),
+                'level' => 'error',
+            ],
+            // other channels...
+        ],
+
+
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),
