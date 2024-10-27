@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.3
+  flutter_secure_storage: ^8.0.0
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -62,6 +64,7 @@ flutter:
     - assets/images/search_icon.png
     - assets/images/messaging_icon.png
     - assets/images/bottom_wave.png
+    - assets/images/waitlist.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

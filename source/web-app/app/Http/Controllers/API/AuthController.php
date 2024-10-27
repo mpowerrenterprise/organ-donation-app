@@ -57,13 +57,36 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Invalid login details'], 401);
+        // Validate request data
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
+        ]);
+
+        // Attempt to find the user by email
+        $user = MobileUser::where('email', $request->email)->first();
+
+        // Check if the user exists and the plain-text password matches
+        if ($user && $request->password === $user->password) {
+            // Check if user status is approved
+            if ($user->status !== 'approved') {
+                return response()->json([
+                    'message' => 'Your account is pending approval',
+                    'status' => 'pending',
+                ], 200);
+            }
+
+            // Password matches and user is approved; return success
+            return response()->json([
+                'message' => 'Login successful',
+                'status' => 'approved',
+                'user' => $user,
+            ], 200);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json(['access_token' => $token, 'token_type' => 'Bearer']);
+        // Invalid credentials
+        return response()->json(['message' => 'Invalid credentials'], 401);
     }
+
+   
 }

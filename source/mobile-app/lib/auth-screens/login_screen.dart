@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../config.dart'; // Import the config file
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../config.dart';
+import '../dashboard/dashboard_screen.dart';
+import '../gs-screens/user_waitlist_screen.dart';  // Import the waitlist screen
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,14 +17,15 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _storage = FlutterSecureStorage();
   String _errorMessage = '';
 
-  final loginUrl = Uri.parse('${Config.baseUrl}/login'); // Use the base URL from Config
+  final loginUrl = Uri.parse('${Config.baseUrl}/login/mobile');
 
   Future<void> loginUser() async {
     try {
       final response = await http.post(
-        loginUrl, // Use the centralized login URL
+        loginUrl,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': _emailController.text,
@@ -31,12 +35,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login successful!')),
-        );
-        setState(() {
-          _errorMessage = '';
-        });
+
+        if (responseData['status'] == 'pending') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => UserWaitlistScreen()),
+          );
+        } else if (responseData['status'] == 'approved') {
+          await _storage.write(key: 'isLoggedIn', value: 'true');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => DashboardScreen()),
+          );
+        } else {
+          setState(() {
+            _errorMessage = 'Unexpected status';
+          });
+        }
       } else {
         final errorData = jsonDecode(response.body);
         setState(() {
@@ -50,15 +65,28 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> checkLoginStatus() async {
+    String? isLoggedIn = await _storage.read(key: 'isLoggedIn');
+    if (isLoggedIn == 'true') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => DashboardScreen()),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkLoginStatus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Login',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.redAccent, // Match the CreateAccountScreen color
+        title: const Text('Login', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.redAccent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -67,15 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo Image
               Image.asset(
-                'assets/images/primary_logo.png', // Ensure this image is in the assets folder
+                'assets/images/primary_logo.png',
                 height: 200,
                 width: 200,
               ),
-              const SizedBox(height: 20), // Spacing below the logo
-
-              // Email Text Field
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
@@ -83,8 +108,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) => value!.isEmpty ? 'Enter email' : null,
               ),
               const SizedBox(height: 10),
-
-              // Password Text Field
               TextFormField(
                 controller: _passwordController,
                 decoration: const InputDecoration(labelText: 'Password'),
@@ -92,8 +115,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) => value!.isEmpty ? 'Enter password' : null,
               ),
               const SizedBox(height: 20),
-
-              // Error Message
               if (_errorMessage.isNotEmpty)
                 Text(
                   _errorMessage,
@@ -101,8 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.center,
                 ),
               const SizedBox(height: 10),
-
-              // Login Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -113,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 15),
-                    backgroundColor: Colors.redAccent, // Match branding
+                    backgroundColor: Colors.redAccent,
                   ),
                   child: const Text(
                     'Login',

@@ -8,4 +8,3 @@ use App\Http\Controllers\API\AuthController;
 
 Route::post('/login/mobile', [AuthController::class, 'login']);
 Route::post('register/mobile', [AuthController::class, 'register']);
-Route::get('/user/mobile', [UserController::class, 'profile'])->middleware('auth:sanctum');

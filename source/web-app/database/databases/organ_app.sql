@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2024 at 09:57 PM
+-- Generation Time: Oct 27, 2024 at 07:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -161,7 +161,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (27, '2024_10_23_111740_create_organs_table', 5),
 (28, '2024_10_23_162400_create_mobile_users_table', 6),
 (30, '2024_10_23_174527_create_organ_requests_table', 7),
-(31, '2024_10_23_193911_create_messages_table', 8);
+(31, '2024_10_23_193911_create_messages_table', 8),
+(32, '2024_10_27_102227_create_personal_access_tokens_table', 9);
 
 -- --------------------------------------------------------
 
@@ -171,9 +172,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `mobile_users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `full_name` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `full_name` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `phone_number` varchar(255) DEFAULT NULL,
   `gender` enum('male','female','other') DEFAULT NULL,
@@ -190,22 +190,30 @@ CREATE TABLE `mobile_users` (
 -- Dumping data for table `mobile_users`
 --
 
-INSERT INTO `mobile_users` (`id`, `full_name`, `username`, `email`, `password`, `phone_number`, `gender`, `dob`, `blood_type`, `organ`, `allergies`, `status`, `created_at`, `updated_at`) VALUES
-(3, 'Michael Johnson', 'mjohnson', 'mjohnson@example.com', 'password123', '5678901234', 'male', '1992-10-05', 'B+', 'Heart', 'Shellfish', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(4, 'Emily Davis', 'edavis', 'edavis@example.com', 'password123', '4321098765', 'female', '1995-03-19', 'AB-', 'Lung', 'Penicillin', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(5, 'Robert Miller', 'rmiller', 'rmiller@example.com', 'password123', '6789012345', 'male', '1988-07-12', 'O+', 'Pancreas', 'None', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(6, 'Sophia Wilson', 'swilson', 'swilson@example.com', 'password123', '3456789012', 'female', '1993-12-07', 'A-', 'Kidney', 'Dust', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(7, 'James Moore', 'jmoore', 'jmoore@example.com', 'password123', '9012345678', 'male', '1986-09-21', 'B-', 'Liver', 'Latex', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(8, 'Isabella Taylor', 'itaylor', 'itaylor@example.com', 'password123', '7654321098', 'female', '1991-02-14', 'AB+', 'Heart', 'Cats', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(9, 'William Anderson', 'wanderson', 'wanderson@example.com', 'password123', '8901234567', 'male', '1989-08-30', 'O-', 'Lung', 'None', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(10, 'Olivia Thomas', 'othomas', 'othomas@example.com', 'password123', '2345678901', 'female', '1994-11-03', 'A+', 'Kidney', 'Gluten', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(11, 'Henry White', 'hwhite', 'hwhite@example.com', 'password123', '9876543210', 'male', '1987-06-25', 'B+', 'Pancreas', 'Pollen', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(12, 'Mia Harris', 'mharris', 'mharris@example.com', 'password123', '8765432109', 'female', '1992-01-05', 'O+', 'Liver', 'Soy', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(13, 'Ethan Martin', 'emartin', 'emartin@example.com', 'password123', '6543210987', 'male', '1990-04-18', 'A-', 'Kidney', 'Milk', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(14, 'Amelia Jackson', 'ajackson', 'ajackson@example.com', 'password123', '5432109876', 'female', '1996-07-09', 'B-', 'Heart', 'Eggs', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(15, 'Daniel Lee', 'dlee', 'dlee@example.com', 'password123', '3210987654', 'male', '1993-03-24', 'O-', 'Lung', 'None', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(16, 'Grace Allen', 'gallen', 'gallen@example.com', 'password123', '1098765432', 'female', '1985-12-17', 'AB+', 'Pancreas', 'Peanuts', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
-(17, 'Alexander Scott', 'ascott', 'ascott@example.com', 'password123', '4567890123', 'male', '1991-10-12', 'A+', 'Liver', 'None', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26');
+INSERT INTO `mobile_users` (`id`, `email`, `full_name`, `password`, `phone_number`, `gender`, `dob`, `blood_type`, `organ`, `allergies`, `status`, `created_at`, `updated_at`) VALUES
+(3, 'mjohnson@example.com', 'Michael Johnson', 'password123', '5678901234', 'male', '1992-10-05', 'B+', 'Heart', 'Shellfish', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(4, 'edavis@example.com', 'Emily Davis', 'password123', '4321098765', 'female', '1995-03-19', 'AB-', 'Lung', 'Penicillin', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(5, 'rmiller@example.com', 'Robert Miller', 'password123', '6789012345', 'male', '1988-07-12', 'O+', 'Pancreas', 'None', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(6, 'swilson@example.com', 'Sophia Wilson', 'password123', '3456789012', 'female', '1993-12-07', 'A-', 'Kidney', 'Dust', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(7, 'jmoore@example.com', 'James Moore', 'password123', '9012345678', 'male', '1986-09-21', 'B-', 'Liver', 'Latex', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(8, 'itaylor@example.com', 'Isabella Taylor', 'password123', '7654321098', 'female', '1991-02-14', 'AB+', 'Heart', 'Cats', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(9, 'wanderson@example.com', 'William Anderson', 'password123', '8901234567', 'male', '1989-08-30', 'O-', 'Lung', 'None', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(10, 'othomas@example.com', 'Olivia Thomas', 'password123', '2345678901', 'female', '1994-11-03', 'A+', 'Kidney', 'Gluten', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(11, 'hwhite@example.com', 'Henry White', 'password123', '9876543210', 'male', '1987-06-25', 'B+', 'Pancreas', 'Pollen', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(12, 'mharris@example.com', 'Mia Harris', 'password123', '8765432109', 'female', '1992-01-05', 'O+', 'Liver', 'Soy', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(13, 'emartin@example.com', 'Ethan Martin', 'password123', '6543210987', 'male', '1990-04-18', 'A-', 'Kidney', 'Milk', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(14, 'ajackson@example.com', 'Amelia Jackson', 'password123', '5432109876', 'female', '1996-07-09', 'B-', 'Heart', 'Eggs', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(15, 'dlee@example.com', 'Daniel Lee', 'password123', '3210987654', 'male', '1993-03-24', 'O-', 'Lung', 'None', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(16, 'gallen@example.com', 'Grace Allen', 'password123', '1098765432', 'female', '1985-12-17', 'AB+', 'Pancreas', 'Peanuts', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(17, 'ascott@example.com', 'Alexander Scott', 'password123', '4567890123', 'male', '1991-10-12', 'A+', 'Liver', 'None', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(21, 'gunarakulan@gmail.com', 'gunarakulan', 'guna12345678', '0740001141', 'male', '1997-11-01', 'B-', 'Corneas', 'nononono', 'pending', '2024-10-26 07:51:18', '2024-10-26 07:51:18'),
+(23, 'gunarakulan@gmail.comsss', 'gunarakulan', 'guna12345678', '0740001141', 'male', '1997-11-01', 'B-', 'Corneas', 'nononono', 'pending', '2024-10-26 07:59:27', '2024-10-26 07:59:27'),
+(24, 'gunarakulan@gmail.comsssdddjjj', 'gunarakulan', 'guna12345678', '0740001141', 'male', '1997-11-01', 'B-', 'Corneas', 'nononono', 'pending', '2024-10-26 08:03:48', '2024-10-26 08:03:48'),
+(25, 'gunarakulan@gmail.comsssdddjjjjj', 'gunarakulan', 'guna12345678', '0740001141', 'male', '1997-11-01', 'B-', 'Corneas', 'nononono', 'pending', '2024-10-26 08:04:11', '2024-10-26 08:04:11'),
+(26, 'gunarakulan@gmail.comsssdddjjjjjdsds', 'gunarakulan', 'guna12345678', '0740001141', 'male', '1997-11-01', 'B-', 'Corneas', 'nononono', 'pending', '2024-10-26 08:42:26', '2024-10-26 08:42:26'),
+(27, 'gunarakulan@gmail.comdsfds', 'hahhaha', 'guna1234', '0740001141', 'male', '1997-11-01', 'A+', 'Pancreas', 'nonono', 'pending', '2024-10-26 08:47:02', '2024-10-26 08:47:02'),
+(28, 'gunaraku@mail.com', 'Gunarakulan', 'fghhjjjjjjj34532', '123452425', 'male', '1997-11-11', 'B-', 'Corneas', 'nnono', 'pending', '2024-10-26 10:26:35', '2024-10-26 10:26:35'),
+(29, 'guna@gmail.com', 'guafd', 'guna12345678', '123456789', 'female', '1997-08-11', 'A+', 'Lung', 'nononono', 'pending', '2024-10-26 11:13:53', '2024-10-26 11:13:53');
 
 -- --------------------------------------------------------
 
@@ -345,7 +353,14 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('AeQDxCDzopaObgBkYVqbn7xmdytMJczZ53PSn7lE', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNENEUTZ6NUxUaXNjcVVlWmJGbkNhNmRndmEwVTJ2TlhkV3ZZR3Z5WCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1729713451);
+('6xl7BkEsEz6uBOV8XFqNPwFx4jGAm3sNCEareQTV', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSzA1UzlUYktHVDRWRVlqc2lQZnljaDdTN0hoNnZidVlsQTJ4dld5WiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1729714887),
+('AeQDxCDzopaObgBkYVqbn7xmdytMJczZ53PSn7lE', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNENEUTZ6NUxUaXNjcVVlWmJGbkNhNmRndmEwVTJ2TlhkV3ZZR3Z5WCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1729713451),
+('km2a1fKQOyw0l0RyZYwom8rFLnr9t4y1nJSxmGh5', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoibldPWHRENHhDaWJxQ3VkNTFyelFORVJ5Wm1sNzh2eHFuTmpVWUhOQiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2Rhc2hib2FyZCI7fX0=', 1730049919),
+('PtTJiTn5zoQOomjADXoZW8LXacPTpnnY3HxOWhEO', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoieHJkaFBPM3hleERMVjV3UVJ2UkhKaE5pR2cxcGQycmwwczJZcXN3USI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozNDoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3VzZXJzL21vYmlsZSI7fX0=', 1729952779),
+('QrJlOO3GKLHlgARuSZzVZPipFlin5sszSfLKm3im', NULL, '127.0.0.1', 'Dart/3.5 (dart:io)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiTmU3WEw3dlR3akVyclJyS0NYRzRwWmNJOHlmNFlmQkVySFVGTDVOMyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1729945442),
+('sRgSgWLEt53kwO4Rv6UuweoXivBQ7pTHoZGGRyIu', NULL, '127.0.0.1', 'Dart/3.5 (dart:io)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiRGc3UFk2b2d5TnZ2eURQWGJwNXFVajY3Z0ZEQVo4bTV4THdRTXhlUSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1729945428),
+('TdQU6dHqtGCddGIhPWLEfUkScoJDBT22YWLi1rbl', NULL, '127.0.0.1', 'Dart/3.5 (dart:io)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoib3BaOEg3UUo4dTRNWERjUlVIYlZ6dEp5T1NCQ0VTcURwa2ZqN1UwUyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1729944947),
+('VYBZG3MxADLP0ASaih7HTpmImJQdofbKtPaqEt95', NULL, '127.0.0.1', 'Dart/3.5 (dart:io)', 'YToyOntzOjY6Il90b2tlbiI7czo0MDoiS21kNGtsWmdMUzZGb29GWFR2dnlhTUhHRVZsZmRFanhndFhVVmtpRCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1729944517);
 
 -- --------------------------------------------------------
 
@@ -433,7 +448,6 @@ ALTER TABLE `migrations`
 --
 ALTER TABLE `mobile_users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `mobile_users_username_unique` (`username`),
   ADD UNIQUE KEY `mobile_users_email_unique` (`email`);
 
 --
@@ -497,13 +511,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `mobile_users`
 --
 ALTER TABLE `mobile_users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `organs`
