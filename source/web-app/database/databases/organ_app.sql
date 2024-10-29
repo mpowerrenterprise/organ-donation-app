@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2024 at 07:12 PM
+-- Generation Time: Oct 29, 2024 at 03:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -129,7 +129,13 @@ INSERT INTO `messages` (`id`, `user_id`, `organ_name`, `blood_type`, `message`, 
 (25, 12, 'Bone Marrow', 'O+', 'Bone marrow donation urgently required for my cousin.', '2024-10-23 19:44:56', '2024-10-23 19:44:56'),
 (26, 13, 'Skin', 'A-', 'Skin graft donor needed after suffering severe burns.', '2024-10-23 19:44:56', '2024-10-23 19:44:56'),
 (27, 14, 'Lung', 'O+', 'I am seeking a lung transplant due to chronic lung disease.', '2024-10-23 19:44:56', '2024-10-23 19:44:56'),
-(28, 15, 'Pancreas', 'A-', 'My friend is in need of a pancreas transplant as soon as possible.', '2024-10-23 19:44:56', '2024-10-23 19:44:56');
+(28, 15, 'Pancreas', 'A-', 'My friend is in need of a pancreas transplant as soon as possible.', '2024-10-23 19:44:56', '2024-10-23 19:44:56'),
+(29, 3, 'Liver', 'B-', 'Hello', '2024-10-29 08:41:19', '2024-10-29 08:41:19'),
+(30, 3, 'Heart', 'AB+', 'Helli', '2024-10-29 08:43:27', '2024-10-29 08:43:27'),
+(31, 3, 'Heart', 'B-', 'hjhjdasd', '2024-10-29 08:45:14', '2024-10-29 08:45:14'),
+(32, 3, 'Pancreas', 'AB+', 'Helllo', '2024-10-29 08:47:59', '2024-10-29 08:47:59'),
+(33, 3, 'Small Intestine', 'O+', 'Hello', '2024-10-29 08:49:55', '2024-10-29 08:49:55'),
+(34, 3, 'Corneas', 'O+', 'dsadsadsad', '2024-10-29 08:50:04', '2024-10-29 08:50:04');
 
 -- --------------------------------------------------------
 
@@ -191,7 +197,7 @@ CREATE TABLE `mobile_users` (
 --
 
 INSERT INTO `mobile_users` (`id`, `email`, `full_name`, `password`, `phone_number`, `gender`, `dob`, `blood_type`, `organ`, `allergies`, `status`, `created_at`, `updated_at`) VALUES
-(3, 'mjohnson@example.com', 'Michael Johnson', 'password123', '5678901234', 'male', '1992-10-05', 'B+', 'Heart', 'Shellfish', 'approved', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
+(3, 'mjohnson@example.com', 'Michael Johnson', 'guna1234', '5678901234', 'male', '1992-10-05', 'B+', 'Heart', 'Shellfish', 'approved', '2024-10-23 16:26:26', '2024-10-29 01:50:47'),
 (4, 'edavis@example.com', 'Emily Davis', 'password123', '4321098765', 'female', '1995-03-19', 'AB-', 'Lung', 'Penicillin', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
 (5, 'rmiller@example.com', 'Robert Miller', 'password123', '6789012345', 'male', '1988-07-12', 'O+', 'Pancreas', 'None', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
 (6, 'swilson@example.com', 'Sophia Wilson', 'password123', '3456789012', 'female', '1993-12-07', 'A-', 'Kidney', 'Dust', 'pending', '2024-10-23 16:26:26', '2024-10-23 16:26:26'),
@@ -240,7 +246,7 @@ CREATE TABLE `organs` (
 
 INSERT INTO `organs` (`id`, `organ_name`, `blood_type`, `donor_name`, `donor_age`, `donor_gender`, `organ_type`, `organ_condition`, `created_at`, `updated_at`) VALUES
 (4, 'Kidney', 'O+', 'John Doe', 45, 'male', 'Vital', 'Healthy', '2024-10-23 17:49:27', '2024-10-23 17:49:27'),
-(5, 'Heart', 'A-', 'Jane Smith', 29, 'female', 'Vital', 'Critical', '2024-10-23 17:49:27', '2024-10-23 17:49:27'),
+(5, 'Heart', 'B+', 'Jane Smith', 29, 'female', 'Vital', 'Critical', '2024-10-23 17:49:27', '2024-10-23 17:49:27'),
 (6, 'Liver', 'B+', 'Mark Johnson', 50, 'male', 'Vital', 'Moderate', '2024-10-23 17:49:27', '2024-10-23 17:49:27'),
 (7, 'Lung', 'AB-', 'Emily Davis', 36, 'female', 'Vital', 'Good', '2024-10-23 17:49:27', '2024-10-23 17:49:27'),
 (8, 'Pancreas', 'O-', 'Robert Wilson', 48, 'male', 'Vital', 'Healthy', '2024-10-23 17:49:27', '2024-10-23 17:49:27'),
@@ -313,25 +319,7 @@ CREATE TABLE `organ_requests` (
 --
 
 INSERT INTO `organ_requests` (`id`, `organ_id`, `user_id`, `date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 4, 4, '2024-10-23', 'pending', NULL, NULL),
-(2, 5, 5, '2024-10-23', 'pending', NULL, NULL),
-(3, 6, 6, '2024-10-22', 'pending', NULL, NULL),
-(4, 7, 7, '2024-10-22', 'pending', NULL, NULL),
-(5, 8, 8, '2024-10-23', 'pending', NULL, '2024-10-23 13:31:12'),
-(6, 9, 9, '2024-10-21', 'pending', NULL, '2024-10-23 13:30:53'),
-(7, 10, 10, '2024-10-22', 'pending', NULL, '2024-10-23 13:30:48'),
-(8, 4, 11, '2024-10-23', 'pending', NULL, '2024-10-23 13:28:25'),
-(9, 6, 12, '2024-10-23', 'pending', NULL, '2024-10-23 13:28:21'),
-(10, 4, 13, '2024-10-21', 'pending', NULL, '2024-10-23 13:19:15'),
-(11, 5, 14, '2024-10-22', 'rejected', NULL, '2024-10-23 13:39:38'),
-(12, 7, 15, '2024-10-23', 'approved', NULL, '2024-10-23 13:39:33'),
-(13, 8, 16, '2024-10-22', 'approved', NULL, '2024-10-23 13:37:35'),
-(14, 6, 17, '2024-10-23', 'approved', NULL, '2024-10-23 13:31:52'),
-(15, 4, 5, '2024-10-24', 'pending', '2024-10-23 19:12:18', '2024-10-23 19:12:18'),
-(16, 6, 8, '2024-10-24', 'pending', '2024-10-23 19:12:18', '2024-10-23 19:12:18'),
-(17, 5, 7, '2024-10-24', 'pending', '2024-10-23 19:12:18', '2024-10-23 19:12:18'),
-(18, 9, 4, '2024-10-24', 'approved', '2024-10-23 19:12:18', '2024-10-23 19:12:18'),
-(19, 10, 6, '2024-10-24', 'rejected', '2024-10-23 19:12:18', '2024-10-23 19:12:18');
+(31, 5, 3, '2024-10-29', 'pending', '2024-10-29 08:50:33', '2024-10-29 08:50:33');
 
 -- --------------------------------------------------------
 
@@ -353,6 +341,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('3eXwsoZPqCRJpt9sTFI9keLZgnsa0rV0RtWahGxP', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiQ1pNdk9tVmhZSklIMVdRRHhiWVJsRzVzU2lLTEJpQWlOVjRSc1BpciI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozMDoiaHR0cDovLzEyNy4wLjAuMTo4MDAwL3NldHRpbmdzIjt9fQ==', 1730191452),
 ('6xl7BkEsEz6uBOV8XFqNPwFx4jGAm3sNCEareQTV', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSzA1UzlUYktHVDRWRVlqc2lQZnljaDdTN0hoNnZidVlsQTJ4dld5WiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1729714887),
 ('AeQDxCDzopaObgBkYVqbn7xmdytMJczZ53PSn7lE', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNENEUTZ6NUxUaXNjcVVlWmJGbkNhNmRndmEwVTJ2TlhkV3ZZR3Z5WCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1729713451),
 ('km2a1fKQOyw0l0RyZYwom8rFLnr9t4y1nJSxmGh5', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoibldPWHRENHhDaWJxQ3VkNTFyelFORVJ5Wm1sNzh2eHFuTmpVWUhOQiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2Rhc2hib2FyZCI7fX0=', 1730049919),
@@ -505,7 +494,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -529,7 +518,7 @@ ALTER TABLE `organs`
 -- AUTO_INCREMENT for table `organ_requests`
 --
 ALTER TABLE `organ_requests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `settings`

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../config.dart';
 import '../dashboard/dashboard_screen.dart';
-import '../gs-screens/user_waitlist_screen.dart';  // Import the waitlist screen
+import '../gs-screens/gs_user_waitlist_screen.dart';  // Import the waitlist screen
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -39,13 +39,18 @@ class _LoginScreenState extends State<LoginScreen> {
         if (responseData['status'] == 'pending') {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => UserWaitlistScreen()),
+            MaterialPageRoute(builder: (context) => const UserWaitlistScreen()),
           );
         } else if (responseData['status'] == 'approved') {
+          // Save login status, user ID, email, and full name to secure storage
           await _storage.write(key: 'isLoggedIn', value: 'true');
+          await _storage.write(key: 'userId', value: responseData['data']['id'].toString()); // Save the user ID
+          await _storage.write(key: 'email', value: responseData['data']['email']); // Save the email
+          await _storage.write(key: 'fullName', value: responseData['data']['full_name']); // Save the full name
+
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => DashboardScreen()),
+            MaterialPageRoute(builder: (context) => const DashboardScreen()),
           );
         } else {
           setState(() {
@@ -64,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
 
   Future<void> checkLoginStatus() async {
     String? isLoggedIn = await _storage.read(key: 'isLoggedIn');

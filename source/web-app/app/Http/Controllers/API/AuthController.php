@@ -62,10 +62,10 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|string|min:8',
         ]);
-
+    
         // Attempt to find the user by email
         $user = MobileUser::where('email', $request->email)->first();
-
+    
         // Check if the user exists and the plain-text password matches
         if ($user && $request->password === $user->password) {
             // Check if user status is approved
@@ -75,18 +75,21 @@ class AuthController extends Controller
                     'status' => 'pending',
                 ], 200);
             }
-
-            // Password matches and user is approved; return success
+    
+            // Password matches and user is approved; return success with selected user details
             return response()->json([
                 'message' => 'Login successful',
                 'status' => 'approved',
-                'user' => $user,
+                'data' => [
+                    'id' => $user->id, // Include the user ID in the response
+                    'email' => $user->email, // Include email
+                    'full_name' => $user->full_name, // Include full name
+                ],
             ], 200);
         }
-
+    
         // Invalid credentials
         return response()->json(['message' => 'Invalid credentials'], 401);
     }
-
    
 }
