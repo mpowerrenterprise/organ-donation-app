@@ -184,13 +184,6 @@ We are using Laravel as the backend framework to manage database interactions an
   
 </p>
 
-<p align="center">
-
-<img src="docs/screenshots/mobile-app/10-user-profile-screen.png" alt="Messaging Screen" width="200"/>
-<img src="docs/screenshots/mobile-app/10-user-profile-screen.png" alt="Messaging Screen" width="200"/>
-
-</p>
-
 
 #### 5.2.2 Auth Screens
 
