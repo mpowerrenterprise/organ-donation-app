@@ -205,7 +205,7 @@ We are using Laravel as the backend framework to manage database interactions an
 
 <p align="center">
 
-<img src="docs/screenshots/mobile-app/8-user-waiting-screen.png" alt="Match Found Screen" width="200"/>
+<img src="docs/screenshots/mobile-app/10-user-profile-screen.png" alt="Match Found Screen" width="200"/>
 
 <img src="docs/screenshots/mobile-app/11-change-password.png" alt="Match Found Screen" width="200"/>
 
