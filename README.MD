@@ -178,22 +178,34 @@ We are using Laravel as the backend framework to manage database interactions an
   <img src="docs/screenshots/mobile-app/1-get-started.png" alt="Get Started Screen" width="200"/>
   <img src="docs/screenshots/mobile-app/2-gs-request-organs.png" alt="Request Organs Screen" width="200"/>
   </p>
-  <p align="center">
+<p align="center">
   <img src="docs/screenshots/mobile-app/3-gs-match-found.png" alt="Match Found Screen" width="200"/>
   <img src="docs/screenshots/mobile-app/4-search-organs.png" alt="Search Organs Screen" width="200"/>
   
 </p>
 
-<img src="docs/screenshots/mobile-app/5-messaging.png" alt="Messaging Screen" width="200"/>
+<p align="center">
+
+    <img src="docs/screenshots/mobile-app/5-messaging.png" alt="Messaging Screen" width="200"/>
+</p>
 
 
 #### 5.2.2 Auth Screens
 
-  <img src="docs/screenshots/mobile-app/6-logging.png" alt="Get Started Screen" width="200"/>
+
+<p align="center">
+ <img src="docs/screenshots/mobile-app/6-logging.png" alt="Get Started Screen" width="200"/>
   <img src="docs/screenshots/mobile-app/7-create-a-new-account.png" alt="Request Organs Screen" width="200"/>
-  <img src="docs/screenshots/mobile-app/8-user-waiting-screen.png" alt="Match Found Screen" width="200"/>
+</p>
+
+<p align="center">
+
+<img src="docs/screenshots/mobile-app/8-user-waiting-screen.png" alt="Match Found Screen" width="200"/>
 
 <img src="docs/screenshots/mobile-app/9-login-screen.png" alt="Match Found Screen" width="200"/>
+
+</p>
+ 
 
 
 
