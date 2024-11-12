@@ -161,16 +161,35 @@
                             <div class="form-group row">
                                 <label for="donor_name" class="col-sm-2 col-form-label">Donor Name:</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="text" placeholder="Enter Donor Name" id="donor_name" name="donor_name" required>
+                                    <input 
+                                        class="form-control" 
+                                        type="text" 
+                                        placeholder="Enter Donor Name" 
+                                        id="donor_name" 
+                                        name="donor_name" 
+                                        pattern="[A-Za-z\s]+" 
+                                        title="Only letters and spaces are allowed"
+                                        required
+                                    >
                                 </div>
-            
+
                                 <!-- Donor Age -->
                                 <label for="donor_age" class="col-sm-2 col-form-label">Donor Age:</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="number" placeholder="Enter Donor Age" id="donor_age" name="donor_age" required>
+                                    <input 
+                                        class="form-control" 
+                                        type="number" 
+                                        placeholder="Enter Donor Age" 
+                                        id="donor_age" 
+                                        name="donor_age" 
+                                        min="18" 
+                                        max="100" 
+                                        required
+                                    >
                                 </div>
                             </div>
-            
+
+
                             <!-- Donor Gender (Dropdown) -->
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Donor Gender:</label>
@@ -278,6 +297,19 @@
 
     <!-- App js -->
     <script src="{{asset('assets')}}/js/app.js"></script>
+
+
+    <script>
+        document.getElementById("donor_age").addEventListener("change", function() {
+            const ageInput = document.getElementById("donor_age");
+            const ageValue = parseInt(ageInput.value, 10);
+    
+            if (ageValue < 18) {
+                alert("Donor age must be above 18.");
+                ageInput.value = ""; // Clear the input
+            }
+        });
+    </script>
     
 
     <script>
@@ -370,6 +402,27 @@
         }
     </script>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const donorNameInput = document.getElementById("donor_name");
+        const donorAgeInput = document.getElementById("donor_age");
+
+        donorNameInput.addEventListener("input", function () {
+            // Remove any characters that are not letters or spaces
+            donorNameInput.value = donorNameInput.value.replace(/[^a-zA-Z\s]/g, "");
+        });
+
+        donorAgeInput.addEventListener("input", function () {
+            const age = parseInt(donorAgeInput.value);
+            if (age < 18) {
+                donorAgeInput.setCustomValidity("Donor age must be 18 or above.");
+            } else {
+                donorAgeInput.setCustomValidity("");
+            }
+        });
+    });
+</script>
 
 
 
