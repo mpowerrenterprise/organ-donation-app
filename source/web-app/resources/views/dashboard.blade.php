@@ -127,17 +127,31 @@
                             @foreach($recentRequests as $request)
                                 <tr>
                                     <td>
-                                        <button type="button" class="btn btn-info btn-approve" onclick="confirmAccept({{ $request->id }})">Accept</button>
-                                        <button type="button" class="btn btn-danger btn-reject" onclick="confirmReject({{ $request->id }})">Reject</button>
+                                        @if($request->status === 'pending')
+                                            <!-- Show buttons if status is pending -->
+                                            <button type="button" class="btn btn-info btn-approve" onclick="confirmAccept({{ $request->id }})">Accept</button>
+                                            <button type="button" class="btn btn-danger btn-reject" onclick="confirmReject({{ $request->id }})">Reject</button>
+                                        @else
+                                            <!-- Display message for accepted/rejected -->
+                                            <span class="badge 
+                                                @if($request->status === 'approved') badge-success
+                                                @elseif($request->status === 'rejected') badge-danger
+                                                @endif">
+                                                {{ ucfirst($request->status) }}
+                                            </span>
+                                        @endif
                                     </td>
                                     <td>{{ $request->organ->organ_name }}</td>
                                     <td>{{ $request->user->full_name }}</td>
                                     <td>{{ $request->user->phone_number }}</td>
-                                    <td>{{ ucfirst($request->status) }}</td>
+                                    <td>
+                                        {{ ucfirst($request->status) }}
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    
                 </div>
             </div>
         </div>
@@ -148,6 +162,7 @@
 @section('FooterAssets')
 
      <!-- Required datatable js -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script src="{{asset('assets')}}/plugins/datatables/jquery.dataTables.min.js"></script>
      <script src="{{asset('assets')}}/plugins/datatables/dataTables.bootstrap4.min.js"></script>
      <script src="{{asset('assets')}}/plugins/datatables/dataTables.responsive.min.js"></script>
@@ -155,5 +170,123 @@
 
     <!-- App js -->
     <script src="{{asset('assets')}}/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+    <script>
+
+          // Confirm accept function using SweetAlert
+          function confirmAccept(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will accept the organ request!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, accept it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    acceptRequest(id);
+                }
+            })
+        }
+
+
+        // Confirm reject function using SweetAlert
+        function confirmReject(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will reject the organ request!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, reject it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    rejectRequest(id);
+                }
+            })
+        }
+        
+
+      // Accept function
+        function acceptRequest(id) {
+            $.ajax({
+                url: '{{ route("accept.organ.request", ":id") }}'.replace(':id', id),
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}' // Include CSRF token here
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire(
+                            'Accepted!',
+                            'The organ request has been accepted.',
+                            'success'
+                        ).then(() => {
+                            location.reload(); // Reload the page
+                        });
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            'Failed to accept the organ request.',
+                            'error'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                    Swal.fire(
+                        'Error!',
+                        'An error occurred while processing the request.',
+                        'error'
+                    );
+                }
+            });
+        }
+
+
+        // Reject function
+        function rejectRequest(id) {
+            $.ajax({
+                url: '{{ route("reject.organ.request", ":id") }}'.replace(':id', id),
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}' // Include CSRF token here
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire(
+                            'Rejected!',
+                            'The organ request has been rejected.',
+                            'success'
+                        ).then(() => {
+                            location.reload(); // Reload the page
+                        });
+                    } else {
+                        Swal.fire(
+                            'Error!',
+                            'Failed to reject the organ request.',
+                            'error'
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error:', status, error);
+                    Swal.fire(
+                        'Error!',
+                        'An error occurred while processing the request.',
+                        'error'
+                    );
+                }
+            });
+        }
+
+
+
+    </script>
 
 @endsection
